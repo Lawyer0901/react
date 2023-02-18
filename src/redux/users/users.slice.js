@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getUsers } from './users.operations';
+import { getUsers, deleteUser } from './users.operations';
 console.log(getUsers);
 
 export const usersSlice = createSlice({
@@ -20,6 +20,18 @@ export const usersSlice = createSlice({
         state.error = null;
       })
       .addCase(getUsers.rejected, (state, { payload }) => {
+        state.error = payload;
+        state.isLoading = false;
+      })
+      .addCase(deleteUser.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(deleteUser.fulfilled, (state, { payload }) => {
+        state.users = state.users.filter(user => user.id !== payload.id);
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(deleteUser.rejected, (state, { payload }) => {
         state.error = payload;
         state.isLoading = false;
       }),

@@ -15,3 +15,16 @@ export const getUsers = createAsyncThunk(
     }
   }
 );
+
+export const deleteUser = createAsyncThunk(
+  'delete/fetchDelete',
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.delete(`/users/${id}`);
+      console.log(data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
